@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Додати продукт</title>
+</head>
+<body>
+    <h1>Додати новий продукт</h1>
+    <form method="POST" action="/products/add">
+        <label>Назва:<br>
+            <input type="text" name="name" required>
+        </label><br><br>
+        <label>Опис:<br>
+            <textarea name="description"></textarea>
+        </label><br><br>
+        <label>Ціна:<br>
+            <input type="number" name="price" step="0.01" required>
+        </label><br><br>
+        <button type="submit">Додати продукт</button>
+    </form>
+    <a href="/products">Назад до списку продуктів</a>
+</body>
+</html>
