@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Редагувати продукт</title>
+</head>
+<body>
+    <h1>Редагувати продукт</h1>
+    <form method="POST" action="/products/edit">
+        <input type="hidden" name="id" value="{{product.id}}">
+        <label>Назва:<br>
+            <input type="text" name="name" value="{{product.name}}" required>
+        </label><br><br>
+        <label>Опис:<br>
+            <textarea name="description">{{product.description}}</textarea>
+        </label><br><br>
+        <label>Ціна:<br>
+            <input type="number" name="price" step="0.01" value="{{product.price}}" required>
+        </label><br><br>
+        <button type="submit">Зберегти зміни</button>
+    </form>
+    <a href="/products">Назад до списку продуктів</a>
+</body>
+</html>
