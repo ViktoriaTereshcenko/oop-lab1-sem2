@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Список продуктів</title>
+</head>
+<body>
+    <h1>Список продуктів</h1>
+    <a href="/products/add">Додати новий продукт</a>
+    <ul>
+            <li>
+                <strong>{{product.name}}</strong> - ${{product.price}} <br>
+                {{product.description}}
+                <br>
+                <a href="/products/edit?id={{ product.id }}">Редагувати</a>
+                <form method="POST" action="/products/delete" style="display:inline;">
+                    <input type="hidden" name="id" value="{{ product.id }}">
+                    <button type="submit">Видалити</button>
+                </form>
+            </li>
+    </ul>
+</body>
+</html>
