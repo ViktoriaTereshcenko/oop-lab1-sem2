@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Чорний список</title>
+</head>
+<body>
+    <h1>Чорний список користувачів</h1>
+        <div style="border: 1px solid red; padding: 10px; margin-bottom: 10px;">
+            <p><strong>Користувач:</strong> {{r.username}}</p>
+            <p><strong>Причина:</strong> {{r.reason}}</p>
+            <p><strong>Дата:</strong> {{r.created_at}}</p>
+        </div>
+    <a href="/">Головна</a>
+</body>
+</html>
