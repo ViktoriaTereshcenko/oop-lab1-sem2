@@ -2,7 +2,7 @@ import unittest
 from io import BytesIO
 from http import cookies
 import session
-import login_handler
+from handlers.login import login_get, login_post
 
 class DummyRequest:
     def __init__(self):
@@ -22,15 +22,18 @@ class DummyRequest:
 class TestLoginHandler(unittest.TestCase):
     def setUp(self):
         session.sessions.clear()
+
         class DummyTemplate:
             def render(self):
                 return "<form>Login</form>"
-        login_handler.env.loader = None
-        login_handler.env.get_template = lambda name: DummyTemplate()
+
+        import handlers.login as login_module
+        login_module.env.loader = None
+        login_module.env.get_template = lambda name: DummyTemplate()
 
     def test_login_get(self):
         req = DummyRequest()
-        login_handler.login_get(req)
+        login_get(req)
         self.assertEqual(req._status, 200)
         self.assertIn("Content-type", req._headers)
         self.assertEqual(req._headers["Content-type"], "text/html")
@@ -40,7 +43,7 @@ class TestLoginHandler(unittest.TestCase):
     def test_login_post_success(self):
         req = DummyRequest()
         params = {"username": ["admin"], "password": ["1234"]}
-        login_handler.login_post(req, params)
+        login_post(req, params)
 
         self.assertEqual(req._status, 302)
         self.assertEqual(req._headers.get("Location"), "/dashboard")
@@ -56,7 +59,7 @@ class TestLoginHandler(unittest.TestCase):
     def test_login_post_failure(self):
         req = DummyRequest()
         params = {"username": ["admin"], "password": ["wrong"]}
-        login_handler.login_post(req, params)
+        login_post(req, params)
         self.assertEqual(req._status, 403)
         body = req.wfile.getvalue()
         self.assertEqual(body, b"Forbidden: Invalid credentials")
@@ -65,7 +68,7 @@ class TestLoginHandler(unittest.TestCase):
     def test_login_post_unknown_user(self):
         req = DummyRequest()
         params = {"username": ["noone"], "password": ["whatever"]}
-        login_handler.login_post(req, params)
+        login_post(req, params)
         self.assertEqual(req._status, 403)
         body = req.wfile.getvalue()
         self.assertEqual(body, b"Forbidden: Invalid credentials")
