@@ -1,7 +1,7 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from http import HTTPStatus
 from urllib.parse import urlparse
-from router.router import Router
+from router import Router
 from session import SessionManager
 from logger import log_info, log_error
 from utils import parse_post_data
