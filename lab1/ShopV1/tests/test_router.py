@@ -11,6 +11,7 @@ class TestRouter(unittest.TestCase):
     def test_initialize_routes_populates_expected_paths(self):
         Router.initialize_routes()
         expected_keys = {
+            ('GET', '/'),
             ('GET', '/login'),
             ('POST', '/login'),
             ('GET', '/logout'),
@@ -19,7 +20,12 @@ class TestRouter(unittest.TestCase):
             ('GET', '/admin/users'),
             ('GET', '/blacklist'),
             ('POST', '/blacklist'),
+            ('GET', '/products'),
+            ('GET', '/products/create'),
+            ('POST', '/products/create'),
+            ('POST', '/products/delete'),
         }
+
         self.assertEqual(set(Router.routes.keys()), expected_keys)
 
         self.assertTrue(callable(Router.routes[('GET', '/login')]))
