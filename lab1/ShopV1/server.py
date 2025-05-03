@@ -16,7 +16,10 @@ class CustomHandler(BaseHTTPRequestHandler):
         if handler:
             try:
                 session = SessionManager.get_session_data(self.headers.get("Cookie"))
-                handler(self, session)
+                if handler.__code__.co_argcount == 2:
+                    handler(self, session)
+                else:
+                    handler(self)
             except Exception as e:
                 log_error(f"GET {self.path} failed: {str(e)}")
                 self.send_response(HTTPStatus.INTERNAL_SERVER_ERROR)
@@ -34,7 +37,10 @@ class CustomHandler(BaseHTTPRequestHandler):
             try:
                 session = SessionManager.get_session_data(self.headers.get("Cookie"))
                 params = parse_post_data(self)
-                handler(self, session, params)
+                if handler.__code__.co_argcount == 3:
+                    handler(self, session, params)
+                else:
+                    handler(self)
             except Exception as e:
                 log_error(f"POST {self.path} failed: {str(e)}")
                 self.send_response(HTTPStatus.INTERNAL_SERVER_ERROR)
@@ -53,30 +59,5 @@ def run():
 
 
 if __name__ == "__main__":
-    from handlers.login import login_get, login_post
-    from controllers.product_controller import ProductController
-
-    product_controller = ProductController()
-
-    Router.add_route("/login", "GET", login_get)
-    Router.add_route("/login", "POST", login_post)
-
-    Router.add_route("/products", "GET", product_controller.list_products)
-    Router.add_route("/products/add", "GET", product_controller.create_form)
-    Router.add_route("/products/add", "POST", product_controller.create)
-    Router.add_route("/products/delete", "POST", product_controller.delete)
-
-    def dashboard(request, session):
-        if not session:
-            request.send_response(302)
-            request.send_header("Location", "/login")
-            request.end_headers()
-            return
-        request.send_response(200)
-        request.end_headers()
-        user_id = session["user_id"]
-        request.wfile.write(f"Welcome, user {user_id}!".encode())
-
-    Router.add_route("/dashboard", "GET", dashboard)
-
+    Router.initialize_routes()
     run()
