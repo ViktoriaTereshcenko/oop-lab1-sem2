@@ -3,5 +3,5 @@ DB_CONFIG = {
     "user": "your_user",
     "password": "your_password",
     "host": "localhost",
-    "port": 5432
+    "port": 8080
 }
