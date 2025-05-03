@@ -1,4 +1,4 @@
-from db import get_connection
+from database import get_connection
 
 class BlacklistDAO:
     @staticmethod
