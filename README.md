@@ -1,4 +1,4 @@
-# oop-labs-sem2
+# oop-lab1-sem2
 Перша лабораторна (папка lab1)
 
 
