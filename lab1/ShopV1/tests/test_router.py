@@ -2,7 +2,7 @@ import unittest
 from controllers.login_controller import LoginController
 from controllers.blacklist_controller import BlacklistController
 from controllers.user_controller import UserController
-from router.router import Router
+from router import Router
 
 class TestRouter(unittest.TestCase):
     def setUp(self):
