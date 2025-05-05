@@ -24,3 +24,21 @@ CREATE TABLE IF NOT EXISTS blacklist (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL UNIQUE REFERENCES users(id) ON DELETE CASCADE
 );
+
+INSERT INTO users (username, password, role)
+VALUES ('admin', 'admin', 'admin')
+ON CONFLICT (username) DO NOTHING;
+
+INSERT INTO users (username, password, role)
+VALUES ('user', 'user123', 'user')
+ON CONFLICT (username) DO NOTHING;
+
+DO $$
+BEGIN
+    FOR i IN 1..5 LOOP
+        INSERT INTO users (username, password, role)
+        VALUES ('user_' || i, 'pass_' || i, 'user')
+        ON CONFLICT (username) DO NOTHING;
+    END LOOP;
+END
+$$;
