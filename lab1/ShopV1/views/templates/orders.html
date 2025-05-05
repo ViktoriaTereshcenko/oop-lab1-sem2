@@ -3,19 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>Список замовлень</title>
+    <style>
+        .top-bar { display: flex; justify-content: space-between; align-items: center; }
+    </style>
 </head>
 <body>
-    <h1>Список замовлень</h1>
-        <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
-            <p><strong>ID замовлення:</strong> {{order.id}}</p>
-            <p><strong>Користувач:</strong> {{order.username}}</p>
-            <p><strong>Статус:</strong> {{order.status}}</p>
-                <form method="post" action="/blacklist">
-                    <input type="hidden" name="user_id" value="{{ order.user_id }}">
-                    <input type="text" name="reason" placeholder="Причина" required>
-                    <button type="submit">Додати в чорний список</button>
-                </form>
+    <div class="top-bar">
+        <h1>Список замовлень</h1>
+        <div>
+            <span>Привіт, {{ username }}! 💫</span>
+            <a href="/logout"><button>Вийти</button></a>
         </div>
+    </div>
+    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+        <p><strong>ID замовлення:</strong> {{order.id}}</p>
+        <p><strong>Користувач:</strong> {{order.username}}</p>
+        <p><strong>Статус:</strong> {{order.status}}</p>
+        <form method="post" action="/blacklist">
+            <input type="hidden" name="user_id" value="{{ order.user_id }}">
+            <input type="text" name="reason" placeholder="Причина" required>
+            <button type="submit">Додати в чорний список</button>
+        </form>
+    </div>
     <a href="/">Головна</a>
 </body>
 </html>
