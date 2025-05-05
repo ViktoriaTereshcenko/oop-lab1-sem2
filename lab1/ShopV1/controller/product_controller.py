@@ -7,14 +7,14 @@ class ProductController:
     def __init__(self):
         self.product_dao = ProductDAO()
 
-    def list_products(self, handler):
+    def list_products(self, handler, session):
         products = self.product_dao.get_all_products()
         handler.send_response(HTTPStatus.OK)
         handler.send_header('Content-type', 'text/html')
         handler.end_headers()
         handler.wfile.write(render_template('products.html', {'products': products}).encode())
 
-    def create_form(self, handler):
+    def create_form(self, handler, session):
         if not check_access(handler, role='admin'):
             return
         handler.send_response(HTTPStatus.OK)
@@ -22,7 +22,7 @@ class ProductController:
         handler.end_headers()
         handler.wfile.write(render_template('product_form.html').encode())
 
-    def create(self, handler):
+    def create(self, handler, session):
         if not check_access(handler, role='admin'):
             return
         data = parse_post_data(handler)
@@ -38,7 +38,7 @@ class ProductController:
 
         redirect(handler, '/products')
 
-    def delete(self, handler, product_id):
+    def delete(self, handler, session, product_id=None):
         if not check_access(handler, role='admin'):
             return
         product_id = safe_int(product_id)
