@@ -1,15 +1,15 @@
 from http import HTTPStatus
-from http.cookies import SimpleCookie
 from template import render_template
 from session import SessionManager
 from dao.user_dao import UserDAO
-from utils import redirect, parse_post_data, logger
+from utils import redirect, logger
 
 class LoginController:
     def __init__(self):
         self.user_dao = UserDAO()
 
-    def login_form(self, handler, session):
+    @staticmethod
+    def login_form(handler, session):
         handler.send_response(HTTPStatus.OK)
         handler.send_header('Content-type', 'text/html')
         handler.end_headers()
@@ -21,7 +21,8 @@ class LoginController:
 
         if not username or not password:
             logger.warning("Login attempt with empty username or password")
-            return redirect(handler, '/login')
+            redirect(handler, '/login')
+            return
 
         user = self.user_dao.get_user_by_credentials(username, password)
         if user:
@@ -36,9 +37,12 @@ class LoginController:
         else:
             logger.warning(f"Login failed for username '{username}'")
             redirect(handler, '/login')
+            return
 
-    def logout(self, handler, session):
+    @staticmethod
+    def logout(handler, session):
         cookie_header = handler.headers.get('Cookie')
         SessionManager.clear_session(cookie_header)
         logger.info("User logged out")
         redirect(handler, '/login')
+        return
