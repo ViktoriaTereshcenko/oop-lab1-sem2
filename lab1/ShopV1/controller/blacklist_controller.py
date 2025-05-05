@@ -7,16 +7,19 @@ class BlacklistController:
     def __init__(self):
         self.blacklist_dao = BlacklistDAO()
 
-    def list_blacklist(self, handler):
+    def list_blacklist(self, handler, session):
         if not check_access(handler, role='admin'):
             return
         users = self.blacklist_dao.get_blacklist()
         handler.send_response(HTTPStatus.OK)
         handler.send_header('Content-type', 'text/html')
         handler.end_headers()
-        handler.wfile.write(render_template('blacklist.html', {'users': users}).encode())
+        handler.wfile.write(render_template('blacklist.html', {
+            'users': users,
+            'username': session.get('username', 'Адміністратор')
+        }).encode())
 
-    def add_to_blacklist(self, handler):
+    def add_to_blacklist(self, handler, session):
         if not check_access(handler, role='admin'):
             return
         data = parse_post_data(handler)
@@ -31,7 +34,7 @@ class BlacklistController:
 
         redirect(handler, '/blacklist')
 
-    def remove_from_blacklist(self, handler, user_id):
+    def remove_from_blacklist(self, handler, session, user_id):
         if not check_access(handler, role='admin'):
             return
         user_id = safe_int(user_id)
