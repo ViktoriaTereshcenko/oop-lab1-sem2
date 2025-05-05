@@ -6,11 +6,12 @@
 </head>
 <body>
     <h1>Список продуктів</h1>
-    <a href="/products/add">Додати новий продукт</a>
+    <a href="/products/create">Додати новий продукт</a>
     <ul>
+        {% for product in products %}
             <li>
-                <strong>{{product.name}}</strong> - ${{product.price}} <br>
-                {{product.description}}
+                <strong>{{ product.name }}</strong> - ${{ product.price }} <br>
+                {{ product.description }}
                 <br>
                 <a href="/products/edit?id={{ product.id }}">Редагувати</a>
                 <form method="POST" action="/products/delete" style="display:inline;">
@@ -18,6 +19,7 @@
                     <button type="submit">Видалити</button>
                 </form>
             </li>
+        {% endfor %}
     </ul>
 </body>
 </html>
