@@ -1,6 +1,7 @@
 from http import HTTPStatus
 from template import render_template
 from dao.product_dao import ProductDAO
+from dao.user_dao import UserDAO
 from utils import redirect, parse_post_data, safe_int, check_access, logger
 
 class ProductController:
@@ -8,13 +9,23 @@ class ProductController:
         self.product_dao = ProductDAO()
 
     def list_products(self, handler, session):
+        user_id = check_access(handler)
+        if user_id is None:
+            return
+
+        user = UserDAO().get_user_by_id(user_id)
         products = self.product_dao.get_all_products()
+
         handler.send_response(HTTPStatus.OK)
         handler.send_header('Content-type', 'text/html')
         handler.end_headers()
-        handler.wfile.write(render_template('products/list.html', {'products': products}).encode())
+        handler.wfile.write(render_template('products/list.html', {
+            'products': products,
+            'username': user.get('username') if user else 'User'
+        }).encode())
 
-    def create_form(self, handler, session):
+    @staticmethod
+    def create_form(handler, session):
         if not check_access(handler, role='admin'):
             return
         handler.send_response(HTTPStatus.OK)
