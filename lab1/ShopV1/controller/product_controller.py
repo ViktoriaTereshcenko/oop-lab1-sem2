@@ -12,7 +12,7 @@ class ProductController:
         handler.send_response(HTTPStatus.OK)
         handler.send_header('Content-type', 'text/html')
         handler.end_headers()
-        handler.wfile.write(render_template('products.html', {'products': products}).encode())
+        handler.wfile.write(render_template('products/list.html', {'products': products}).encode())
 
     def create_form(self, handler, session):
         if not check_access(handler, role='admin'):
