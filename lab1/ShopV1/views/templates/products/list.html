@@ -3,9 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Список продуктів</title>
+    <style>
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
 </head>
 <body>
-    <h1>Список продуктів</h1>
+    <div class="top-bar">
+        <h1>Список продуктів</h1>
+        <div>
+            <span>Привіт, {{ username }}! 💫</span>
+            <a href="/logout" style="margin-left: 15px;"><button>Вийти</button></a>
+        </div>
+    </div>
+
     <a href="/products/create">Додати новий продукт</a>
     <ul>
         {% for product in products %}
