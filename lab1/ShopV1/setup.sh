@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DB_NAME="shop_db"
+DB_NAME="shop"
 DB_USER="vikilinater"
 INIT_SQL="init.sql"
 
