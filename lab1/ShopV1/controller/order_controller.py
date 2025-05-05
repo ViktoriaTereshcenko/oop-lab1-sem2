@@ -9,7 +9,7 @@ class OrderController:
         self.order_dao = OrderDAO()
         self.product_dao = ProductDAO()
 
-    def list_orders(self, handler):
+    def list_orders(self, handler, session):
         user_id = check_access(handler)
         if not user_id:
             return
@@ -17,9 +17,12 @@ class OrderController:
         handler.send_response(HTTPStatus.OK)
         handler.send_header('Content-type', 'text/html')
         handler.end_headers()
-        handler.wfile.write(render_template('orders.html', {'orders': orders}).encode())
+        handler.wfile.write(render_template('orders.html', {
+            'orders': orders,
+            'username': session.get('username', 'Користувач')
+        }).encode())
 
-    def create_form(self, handler):
+    def create_form(self, handler, session):
         user_id = check_access(handler)
         if not user_id:
             return
@@ -27,9 +30,12 @@ class OrderController:
         handler.send_response(HTTPStatus.OK)
         handler.send_header('Content-type', 'text/html')
         handler.end_headers()
-        handler.wfile.write(render_template('order_form.html', {'products': products}).encode())
+        handler.wfile.write(render_template('order_form.html', {
+            'products': products,
+            'username': session.get('username', 'Користувач')
+        }).encode())
 
-    def create(self, handler):
+    def create(self, handler, session):
         user_id = check_access(handler)
         if not user_id:
             return
@@ -45,7 +51,7 @@ class OrderController:
 
         redirect(handler, '/orders')
 
-    def pay(self, handler, order_id):
+    def pay(self, handler, session, order_id):
         user_id = check_access(handler)
         if not user_id:
             return
