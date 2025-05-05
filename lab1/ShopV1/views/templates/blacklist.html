@@ -3,14 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Чорний список</title>
+    <style>
+        .top-bar { display: flex; justify-content: space-between; align-items: center; }
+    </style>
 </head>
 <body>
-    <h1>Чорний список користувачів</h1>
-        <div style="border: 1px solid red; padding: 10px; margin-bottom: 10px;">
-            <p><strong>Користувач:</strong> {{r.username}}</p>
-            <p><strong>Причина:</strong> {{r.reason}}</p>
-            <p><strong>Дата:</strong> {{r.created_at}}</p>
+    <div class="top-bar">
+        <h1>Чорний список користувачів</h1>
+        <div>
+            <span>Привіт, {{ username }}! 💫</span>
+            <a href="/logout"><button>Вийти</button></a>
         </div>
+    </div>
+    <div style="border: 1px solid red; padding: 10px; margin-bottom: 10px;">
+        <p><strong>Користувач:</strong> {{r.username}}</p>
+        <p><strong>Причина:</strong> {{r.reason}}</p>
+        <p><strong>Дата:</strong> {{r.created_at}}</p>
+    </div>
     <a href="/">Головна</a>
 </body>
 </html>
