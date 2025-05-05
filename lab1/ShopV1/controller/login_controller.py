@@ -29,7 +29,7 @@ class LoginController:
             session_id = SessionManager.create_session(user['id'])
 
             handler.send_response(HTTPStatus.SEE_OTHER)
-            handler.send_header('Location', '/')
+            handler.send_header('Location', '/index')
             handler.send_header('Set-Cookie', f'session_id={session_id}; Path=/; HttpOnly')
             handler.end_headers()
 
