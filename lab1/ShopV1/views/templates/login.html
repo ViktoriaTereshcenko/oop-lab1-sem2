@@ -6,16 +6,26 @@
 </head>
 <body>
     <h1>Увійти в систему</h1>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
     <form method="POST" action="/login">
         <label>
             Ім’я користувача:
             <input type="text" name="username" required autofocus>
         </label><br><br>
+
         <label>
             Пароль:
             <input type="password" name="password" required>
         </label><br><br>
+
         <button type="submit">Увійти</button>
     </form>
+
+    <p>Ще не маєте акаунта?</p>
+    <a href="/register"><button>Зареєструватися</button></a>
 </body>
 </html>
