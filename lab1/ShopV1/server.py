@@ -5,6 +5,7 @@ from router import Router
 from session import SessionManager
 from logger import log_info, log_error
 from utils import parse_post_data
+import traceback
 
 PORT = 8080
 
@@ -16,12 +17,17 @@ class CustomHandler(BaseHTTPRequestHandler):
         if handler:
             try:
                 session = SessionManager.get_session_data(self.headers.get("Cookie"))
-                if handler.__code__.co_argcount == 2:
+                arg_count = handler.__code__.co_argcount
+                if arg_count == 3:
                     handler(self, session)
-                else:
+                elif arg_count == 2:
+                    handler(self, session)
+                elif arg_count == 1:
                     handler(self)
+                else:
+                    raise TypeError("Unsupported number of arguments for handler")
             except Exception as e:
-                log_error(f"GET {self.path} failed: {str(e)}")
+                log_error(f"GET {self.path} failed:\n" + traceback.format_exc())
                 self.send_response(HTTPStatus.INTERNAL_SERVER_ERROR)
                 self.end_headers()
                 self.wfile.write(b"Internal Server Error")
@@ -37,12 +43,17 @@ class CustomHandler(BaseHTTPRequestHandler):
             try:
                 session = SessionManager.get_session_data(self.headers.get("Cookie"))
                 params = parse_post_data(self)
-                if handler.__code__.co_argcount == 3:
+                arg_count = handler.__code__.co_argcount
+                if arg_count == 3:
                     handler(self, session, params)
-                else:
+                elif arg_count == 2:
+                    handler(self, session)
+                elif arg_count == 1:
                     handler(self)
+                else:
+                    raise TypeError("Unsupported number of arguments for handler")
             except Exception as e:
-                log_error(f"POST {self.path} failed: {str(e)}")
+                log_error(f"POST {self.path} failed:\n" + traceback.format_exc())
                 self.send_response(HTTPStatus.INTERNAL_SERVER_ERROR)
                 self.end_headers()
                 self.wfile.write(b"Internal Server Error")
