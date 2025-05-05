@@ -5,11 +5,27 @@
     <title>Реєстрація</title>
 </head>
 <body>
-    <h2>Реєстрація</h2>
-    <form method="post" action="/register">
-        <label>Логін: <input type="text" name="username" required></label><br>
-        <label>Пароль: <input type="password" name="password" required></label><br>
+    <h1>Реєстрація</h1>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST" action="/register">
+        <label>
+            Логін:
+            <input type="text" name="username" required>
+        </label><br><br>
+
+        <label>
+            Пароль:
+            <input type="password" name="password" required>
+        </label><br><br>
+
         <button type="submit">Зареєструватися</button>
     </form>
+
+    <p>Вже маєте акаунт?</p>
+    <a href="/login"><button>Увійти</button></a>
 </body>
 </html>
