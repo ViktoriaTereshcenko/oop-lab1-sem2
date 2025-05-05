@@ -16,7 +16,8 @@ class UserController:
         handler.end_headers()
         handler.wfile.write(render_template('users.html', {'users': users}).encode())
 
-    def register_form(self, handler):
+    @staticmethod
+    def register_form(handler):
         handler.send_response(HTTPStatus.OK)
         handler.send_header('Content-type', 'text/html')
         handler.end_headers()
