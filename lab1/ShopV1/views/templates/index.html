@@ -2,10 +2,23 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>Ласкаво просимо до магазину</title>
+    <title>Головна сторінка</title>
+    <style>
+        .top-bar { display: flex; justify-content: space-between; align-items: center; }
+    </style>
 </head>
 <body>
-    <h1>Ласкаво просимо до магазину!</h1>
-    <a href="products/list.html">Переглянути товари</a>
+    <div class="top-bar">
+        <h1>Головна сторінка</h1>
+        <div>
+            <span>Привіт, {{ username }}! 💫</span>
+            <a href="/logout"><button>Вийти</button></a>
+        </div>
+    </div>
+    <ul>
+        <li><a href="/products">Переглянути товари</a></li>
+        <li><a href="/orders">Мої замовлення</a></li>
+        <li><a href="/blacklist">Чорний список</a></li>
+    </ul>
 </body>
 </html>
