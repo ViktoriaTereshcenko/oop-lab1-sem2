@@ -3,20 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Редагувати продукт</title>
+    <style>
+        .top-bar { display: flex; justify-content: space-between; align-items: center; }
+    </style>
 </head>
 <body>
-    <h1>Редагувати продукт</h1>
+    <div class="top-bar">
+        <h1>Редагувати продукт</h1>
+        <div>
+            <span>Привіт, {{ username }}! 💫</span>
+            <a href="/logout"><button>Вийти</button></a>
+        </div>
+    </div>
     <form method="POST" action="/products/edit">
         <input type="hidden" name="id" value="{{product.id}}">
-        <label>Назва:<br>
-            <input type="text" name="name" value="{{product.name}}" required>
-        </label><br><br>
-        <label>Опис:<br>
-            <textarea name="description">{{product.description}}</textarea>
-        </label><br><br>
-        <label>Ціна:<br>
-            <input type="number" name="price" step="0.01" value="{{product.price}}" required>
-        </label><br><br>
+        <label>Назва:<br><input type="text" name="name" value="{{product.name}}" required></label><br><br>
+        <label>Опис:<br><textarea name="description">{{product.description}}</textarea></label><br><br>
+        <label>Ціна:<br><input type="number" name="price" step="0.01" value="{{product.price}}" required></label><br><br>
         <button type="submit">Зберегти зміни</button>
     </form>
     <a href="/products">Назад до списку продуктів</a>
