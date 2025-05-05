@@ -9,16 +9,15 @@ class LoginController:
     def __init__(self):
         self.user_dao = UserDAO()
 
-    def login_form(self, handler):
+    def login_form(self, handler, session):
         handler.send_response(HTTPStatus.OK)
         handler.send_header('Content-type', 'text/html')
         handler.end_headers()
         handler.wfile.write(render_template('login.html').encode())
 
-    def login(self, handler):
-        data = parse_post_data(handler)
-        username = data.get('username')
-        password = data.get('password')
+    def login(self, handler, session, params):
+        username = params.get('username')
+        password = params.get('password')
 
         if not username or not password:
             logger.warning("Login attempt with empty username or password")
@@ -27,18 +26,18 @@ class LoginController:
         user = self.user_dao.get_user_by_credentials(username, password)
         if user:
             session_id = SessionManager.create_session(user['id'])
+
             handler.send_response(HTTPStatus.SEE_OTHER)
             handler.send_header('Location', '/')
-            cookie = SimpleCookie()
-            cookie['session_id'] = session_id
-            handler.send_header('Set-Cookie', cookie.output(header='', sep=''))
+            handler.send_header('Set-Cookie', f'session_id={session_id}; Path=/; HttpOnly')
             handler.end_headers()
+
             logger.info(f"User '{username}' logged in successfully")
         else:
             logger.warning(f"Login failed for username '{username}'")
             redirect(handler, '/login')
 
-    def logout(self, handler):
+    def logout(self, handler, session):
         cookie_header = handler.headers.get('Cookie')
         SessionManager.clear_session(cookie_header)
         logger.info("User logged out")
